@@ -1,12 +1,9 @@
 import Stopwatch from './Stopwatch.js'
 
-interface StopwatchResults {
-  [resultOfList: number]: HTMLElement
-}
 
 class StopwatchWithResults extends Stopwatch {
 
-  results: StopwatchResults = []
+  results: string[]  = []
 
   constructor(element: HTMLDivElement) {
     super(element)
@@ -34,10 +31,13 @@ class StopwatchWithResults extends Stopwatch {
     Funkcja ta powinna czyścić zawartość this.dom.resultsList, a następnie renderować w niej nowe elementy li
     na podstawie zawartości tablicy this.results. Każdy jej element powinien być renderowany bez żadnych zmian.
 
-    np. <li>00:12:00</li>
+    np. <li>00:12:00</li> for each <li> i liste wrzucic do html
     */
-   this.dom.resultsList.innerHTML = ''
 
+  //  this.dom.resultsList.innerHTML =  this.results.join('');
+    let li = document.createElement('li') as HTMLElement;
+    li.innerText = this.formatTime(this.currentTime);
+    this.dom.resultsList.appendChild(li);
   }
 
   addToList() {
@@ -45,12 +45,18 @@ class StopwatchWithResults extends Stopwatch {
     Funkcja ta powinna pobierać aktualny czas z this.currentTime, formatować go i w takiej postaci zapisywać do tablicy this.results.
     Następnie powinna renderować aktualną listę na stronie (this.renderList).
     */
+   const formattedTime = this.formatTime(this.currentTime);
+   this.results.push(formattedTime);
+   this.renderList();
+
   }
 
   resetList() {
     /*
     Funkcja ta powinna czyścić tablicę this.results oraz zawartość this.dom.resultsList
     */
+   this.results = []
+   this.dom.resultsList.innerHTML = '';
   }
 
 }

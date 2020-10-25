@@ -9,7 +9,7 @@ interface StopwatchDom {
 abstract class Stopwatch {
 
   protected currentTime: number = 0
-  private timer: number | null = null
+  private timer: number | undefined = undefined
   protected dom = <StopwatchDom> {}
 
   constructor(element: HTMLDivElement) {
@@ -28,10 +28,10 @@ abstract class Stopwatch {
     Wszystkie referencje dla czytelności przechowuj w obiekcie this.dom.
     */
   private getElements(element: HTMLDivElement): void {
-    this.dom.currentTime = <HTMLDivElement> element.querySelector('.stopwatch__current-time');
-    this.dom.startBtn = <HTMLButtonElement> element.querySelector('.stopwatch__start-btn');
-    this.dom.stopBtn = <HTMLButtonElement> element.querySelector('.stopwatch__stop-btn');
-    this.dom.resetBtn = <HTMLButtonElement> element.querySelector('.stopwatch__reset-btn');
+    this.dom.currentTime = <HTMLDivElement>element.querySelector('.stopwatch__current-time');
+    this.dom.startBtn = <HTMLButtonElement>element.querySelector('.stopwatch__start-btn');
+    this.dom.stopBtn = <HTMLButtonElement>element.querySelector('.stopwatch__stop-btn');
+    this.dom.resetBtn = <HTMLButtonElement>element.querySelector('.stopwatch__reset-btn');
   }
 
   private initActions(): void {
@@ -78,7 +78,7 @@ abstract class Stopwatch {
 
     Dla wygody przypisz ten interwał do this.timer
     */
-    this.timer = setInterval(this.step, 1000)
+    this.timer = setInterval(() => this.step(), 1)
   }
 
   private step(): void {
@@ -86,14 +86,15 @@ abstract class Stopwatch {
     Funkcja ta powinna zwiększać liczbę sekund w this.currentTime o jeden, a następnie uruchamiać metodę
     renderującą aktualny czas w HTML-u (this.renderTime).
     */
-  this.currentTime = +1;
+  this.currentTime = this.currentTime + 1;
+  this.renderTime();
   }
 
   protected stop(): void {
     /*
     Funkcja ta powinna zatrzymywać interval przypisany do this.timer.
     */
-  clearInterval(this.currentTime);
+  clearInterval(this.timer);
   }
 
   protected reset() {
